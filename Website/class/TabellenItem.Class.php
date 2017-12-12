@@ -4,6 +4,8 @@
 *	Datum: 10.11.2017
 */
 
+namespace Datenbank\Datensatz;
+
 /**
 *	Basisiklasse für einzelne Datensätze
 */

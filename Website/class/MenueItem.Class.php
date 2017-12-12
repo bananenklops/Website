@@ -1,11 +1,11 @@
 <?php
 /**
-*	Author: Tobias Keßler
+*	Author: Tobias KeÃŸler
 *	Datum: 10.11.2017
 */
 
 /**
-*	Einzelnes Menü
+*	Einzelnes Menï¿½
 */
 class MenueItem extends TabellenItem
 {

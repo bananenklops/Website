@@ -4,6 +4,8 @@
 *   Datum: 09.11.2017
 */
 
+namespace Datenbank\Verbindung;
+
 // Konstanten Definitionen
 define('QUERY_GET', 1);
 define('QUERY_SET', 2);

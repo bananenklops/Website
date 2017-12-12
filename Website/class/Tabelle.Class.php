@@ -1,9 +1,13 @@
 <?php
 /**
-*	Author: Tobias Keßler
+*	Author: Tobias KeÃŸler
 *	Datum: 09.11.2017
 */
 
+namespace Datenbank\Tabelle;
+
+use Datenbank\Verbindung;
+use Datenbank\Datensatz;
 /**
 *	Basisklasse
 */
@@ -12,10 +16,10 @@ class Tabelle
 // Eigenschaften
 	
 	// Protected
-	private $_DB = null;
-	private $_TabellenName = "";
-	private $_Data = null;
-	private $_Columns = null;
+	protected $_DB = null;
+	protected $_TabellenName = "";
+	protected $_Data = null;
+	protected $_Columns = null;
 	
 	// Public
 	
@@ -28,7 +32,7 @@ class Tabelle
 		$result = $this->_DB->executeQuery($query);
 		
 		foreach ($result as $k => $v) {
-			$datensatz = new TabellenItem();
+			$datensatz = new Datensatz\TabellenItem();
 			foreach ($v as $k2 => $v2) {
 				$datensatz->$k2 = $v2; 
 			}
@@ -46,7 +50,7 @@ class Tabelle
 	{
 		$this->_TabellenName = $tabelle;
 		$this->_Data = array();
-		$this->_DB = Datenbank::getInstance();
+		$this->_DB = Verbindung\Datenbank::getInstance();
 		$this->getAllData();
 	}
 	

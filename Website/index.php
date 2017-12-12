@@ -6,14 +6,14 @@
 
 require_once 'autoloader.php';
 
-$test = new Tabelle('t_menue');
-$data = $test->getData();
+$test = Model\Daten\Tabelle\Tabelle::getTable('Bestellung');
 
-if ($data) {
-	foreach($data as $key => $value){
-		foreach ($value->getColumns() as $column => $irgendwas) {
-			echo $column . ": " . $irgendwas . " | ";
-		}
-		echo "<br />";
-	}
-}
+$item = new Model\Daten\Item\BestellungItem();
+$item->setData(array(
+	ID_BESTELLUNG => null,
+	DATUM_BESTELLUNG => time(),
+	ID_MITARBEITER => 1,
+	ID_EVENT => 1
+));
+
+$test->createEntry($item);
