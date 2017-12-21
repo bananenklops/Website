@@ -1,4 +1,0 @@
-H:\SAE\Abschlussprojekt\FestBonSystemKonzept\Managing.Contract\bin\Debug\Managing.Contract.dll
-H:\SAE\Abschlussprojekt\FestBonSystemKonzept\Managing.Contract\bin\Debug\Managing.Contract.pdb
-H:\SAE\Abschlussprojekt\FestBonSystemKonzept\Managing.Contract\obj\Debug\Managing.Contract.dll
-H:\SAE\Abschlussprojekt\FestBonSystemKonzept\Managing.Contract\obj\Debug\Managing.Contract.pdb
