@@ -14,7 +14,7 @@ define('RABATT_MENUE', 'rabatt_menue');
 define('DATUM_MENUE', 'datum_menue');
 
 /**
-*	Klasse für die Tabelle Menü
+*	Klasse für die Table Menü
 */
 class Menu extends Table
 {

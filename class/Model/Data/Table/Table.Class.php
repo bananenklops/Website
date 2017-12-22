@@ -17,23 +17,35 @@ abstract class Table
 // Eigenschaften
 	
 	// Protected
-	protected $_DB = null;
+    /** @var Database */
+	protected $_DB;
+	/** @var string */
 	protected $_TableName = "";
-	protected $_Data = null;
-	protected $_Columns = null;
+	/** @var array */
+	protected $_Data;
+	/** @var array */
+	protected $_Columns;
 	
 	// Public
 	
 // Methoden
 
 	// protected
-	protected function getAllData()
+
+    /**
+     * Holt alle Dateien für diese Table aus der Datenbank
+     */
+	protected function getAllData($id)
 	{
-		$query = "SELECT * FROM ".$this->_TableName;
+	    if ($id === 0)
+		    $query = "SELECT * FROM ".$this->_TableName;
+	    else
+            $query = "SELECT * FROM ".$this->_TableName." WHERE `id_".$this->_TableName."` = ".$id.";";
+
 		$result = $this->_DB->executeQuery($query);
 		
 		foreach ($result as $k => $v) {
-			$datensatz = new TabellenItem();
+			$datensatz = new TableItem();
 			foreach ($v as $k2 => $v2) {
 				$datensatz->$k2 = $v2; 
 			}
@@ -42,25 +54,33 @@ abstract class Table
 	}
 	
 	// Public
-	public function __construct()
+
+    /**
+     * Table constructor.
+     * @param int $id
+     */
+	public function __construct($id = 0)
 	{
 		$this->_Data = array();
 		$this->_DB = Database::getInstance();
-		$this->getAllData();
+		$this->getAllData($id);
 	}
-	
+
+    /**
+     * Tabellendaten oder false
+     * @return array|bool
+     */
 	public function getData()
 	{
-	    $this->getAllData();
 		return (is_array($this->_Data) && count($this->_Data) > 0) ? $this->_Data : false;
 	}
 	
 	/**
 	* Erzeugt einen Datenbankeintrag mit gegebenem Item
 	*
-	* @param TabellenItem $item
+	* @param TableItem $item
 	*/
-	public function erstelleEintrag(TabellenItem $item)
+	public function erstelleEintrag(TableItem $item)
 	{
 		$values = "";
 		foreach($item->getColumns() as $key => $value) {
@@ -78,10 +98,16 @@ abstract class Table
 		
 		$this->_DB->executeQuery($query);
 	}
-	
-	static public function getTabelle($table)
+
+    /**
+     * Gibt einem die richtige Table
+     * @param $table
+     * @param int $id
+     * @return Table
+     */
+	static public function getTabelle($table, $id = 0)
 	{
-		$table = "\\Model\\Data\\Tabelle\\".$table;
-		return new $table();
+		$table = "\\Model\\Data\\Table\\".$table;
+		return new $table($id);
 	}
 }

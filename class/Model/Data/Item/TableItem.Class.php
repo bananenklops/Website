@@ -7,7 +7,7 @@
 namespace Model\Data\Item;
 
 /**
-*	Basisiklasse für einzelne Datensätze
+*	Klasse für einzelne Daten
 */
 class TableItem
 {
@@ -16,7 +16,7 @@ class TableItem
 	// Public
 	
 	/**
-	*	Gibt Namen der Eigenschaften zurück, die den Spaltennamen in der Tabelle entsprechen
+	*	Gibt Namen der Eigenschaften, die den Spaltennamen in der Table entsprechen
 	*
 	*	@return array
 	*/	
@@ -24,11 +24,24 @@ class TableItem
 	{
 		return get_object_vars($this);
 	}
-	
+
+    /**
+     * Setzt gegebene Eigenschaften eins zu eins. !!Aufpassen mit Array Keys!!
+     * @param array $data
+     */
 	public function setData(array $data)
 	{
 		foreach ($data as $key => $value) {
 			$this->$key = $value;
 		}
 	}
+
+    /**
+     * @param string $col
+     * @return mixed
+     */
+	public function __get($col)
+    {
+        return $this->$col;
+    }
 }

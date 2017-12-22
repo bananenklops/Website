@@ -25,7 +25,7 @@ USE festbon;
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `m_bestellung_menue`
+-- Tabellenstruktur für Table `m_bestellung_menue`
 --
 
 CREATE TABLE IF NOT EXISTS `m_bestellung_menue` (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `m_bestellung_menue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Data für Tabelle `m_bestellung_menue`
+-- Data für Table `m_bestellung_menue`
 --
 
 INSERT INTO `m_bestellung_menue` (`id_bestellung`, `id_menue`) VALUES
@@ -43,7 +43,7 @@ INSERT INTO `m_bestellung_menue` (`id_bestellung`, `id_menue`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `m_bestellung_produkt`
+-- Tabellenstruktur für Table `m_bestellung_produkt`
 --
 
 CREATE TABLE IF NOT EXISTS `m_bestellung_produkt` (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `m_bestellung_produkt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Data für Tabelle `m_bestellung_produkt`
+-- Data für Table `m_bestellung_produkt`
 --
 
 INSERT INTO `m_bestellung_produkt` (`id_bestellung`, `id_produkt`, `menge`) VALUES
@@ -63,7 +63,7 @@ INSERT INTO `m_bestellung_produkt` (`id_bestellung`, `id_produkt`, `menge`) VALU
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `m_menue`
+-- Tabellenstruktur für Table `m_menue`
 --
 
 CREATE TABLE IF NOT EXISTS `m_menue` (
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `m_menue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Data für Tabelle `m_menue`
+-- Data für Table `m_menue`
 --
 
 INSERT INTO `m_menue` (`id_menue`, `id_produkt`, `menge`) VALUES
@@ -83,7 +83,7 @@ INSERT INTO `m_menue` (`id_menue`, `id_produkt`, `menge`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `t_bestand`
+-- Tabellenstruktur für Table `t_bestand`
 --
 
 CREATE TABLE IF NOT EXISTS `t_bestand` (
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `t_bestand` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Data für Tabelle `t_bestand`
+-- Data für Table `t_bestand`
 --
 
 INSERT INTO `t_bestand` (`id_bestand`, `name_bestand`, `einheit_bestand`, `menge_bestand`) VALUES
@@ -105,7 +105,7 @@ INSERT INTO `t_bestand` (`id_bestand`, `name_bestand`, `einheit_bestand`, `menge
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `t_bestellung`
+-- Tabellenstruktur für Table `t_bestellung`
 --
 
 CREATE TABLE IF NOT EXISTS `t_bestellung` (
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `t_bestellung` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Data für Tabelle `t_bestellung`
+-- Data für Table `t_bestellung`
 --
 
 INSERT INTO `t_bestellung` (`id_bestellung`, `datum_bestellung`, `id_mitarbeiter`, `id_event`) VALUES
@@ -127,7 +127,7 @@ INSERT INTO `t_bestellung` (`id_bestellung`, `datum_bestellung`, `id_mitarbeiter
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `t_event`
+-- Tabellenstruktur für Table `t_event`
 --
 
 CREATE TABLE IF NOT EXISTS `t_event` (
@@ -140,14 +140,14 @@ CREATE TABLE IF NOT EXISTS `t_event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Data für Tabelle `t_event`
+-- Data für Table `t_event`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `t_menue`
+-- Tabellenstruktur für Table `t_menue`
 --
 
 CREATE TABLE IF NOT EXISTS `t_menue` (
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `t_menue` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
--- Data für Tabelle `t_menue`
+-- Data für Table `t_menue`
 --
 
 INSERT INTO `t_menue` (`id_menue`, `name_menue`, `beschreibung_menue`, `rabatt_menue`, `datum_menue`) VALUES
@@ -169,7 +169,7 @@ INSERT INTO `t_menue` (`id_menue`, `name_menue`, `beschreibung_menue`, `rabatt_m
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `t_produkt`
+-- Tabellenstruktur für Table `t_produkt`
 --
 
 CREATE TABLE IF NOT EXISTS `t_produkt` (
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `t_produkt` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Data für Tabelle `t_produkt`
+-- Data für Table `t_produkt`
 --
 
 INSERT INTO `t_produkt` (`id_produkt`, `name_produkt`, `preis_produkt`, `letztesUpdate_produkt`, `id_bestand`, `portion_produkt`, `aktiv_produkt`) VALUES
