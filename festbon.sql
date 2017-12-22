@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `m_bestellung_menue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Daten für Tabelle `m_bestellung_menue`
+-- Data für Tabelle `m_bestellung_menue`
 --
 
 INSERT INTO `m_bestellung_menue` (`id_bestellung`, `id_menue`) VALUES
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `m_bestellung_produkt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Daten für Tabelle `m_bestellung_produkt`
+-- Data für Tabelle `m_bestellung_produkt`
 --
 
 INSERT INTO `m_bestellung_produkt` (`id_bestellung`, `id_produkt`, `menge`) VALUES
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `m_menue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Daten für Tabelle `m_menue`
+-- Data für Tabelle `m_menue`
 --
 
 INSERT INTO `m_menue` (`id_menue`, `id_produkt`, `menge`) VALUES
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `t_bestand` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `t_bestand`
+-- Data für Tabelle `t_bestand`
 --
 
 INSERT INTO `t_bestand` (`id_bestand`, `name_bestand`, `einheit_bestand`, `menge_bestand`) VALUES
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `t_bestellung` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `t_bestellung`
+-- Data für Tabelle `t_bestellung`
 --
 
 INSERT INTO `t_bestellung` (`id_bestellung`, `datum_bestellung`, `id_mitarbeiter`, `id_event`) VALUES
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `t_event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `t_event`
+-- Data für Tabelle `t_event`
 --
 
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `t_menue` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `t_menue`
+-- Data für Tabelle `t_menue`
 --
 
 INSERT INTO `t_menue` (`id_menue`, `name_menue`, `beschreibung_menue`, `rabatt_menue`, `datum_menue`) VALUES
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `t_produkt` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `t_produkt`
+-- Data für Tabelle `t_produkt`
 --
 
 INSERT INTO `t_produkt` (`id_produkt`, `name_produkt`, `preis_produkt`, `letztesUpdate_produkt`, `id_bestand`, `portion_produkt`, `aktiv_produkt`) VALUES
