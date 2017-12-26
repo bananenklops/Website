@@ -74,6 +74,20 @@ abstract class Table
 	{
 		return (is_array($this->_Data) && count($this->_Data) > 0) ? $this->_Data : false;
 	}
+
+	public function getRawData()
+    {
+        $res = array();
+        if (is_array($this->_Data) && count($this->_Data) > 0) {
+            foreach ($this->_Data as $number => $item) {
+                foreach ($item as $key => $value) {
+                    $res[$number][$key] = $value;
+                }
+            }
+        }
+
+        return $res;
+    }
 	
 	/**
 	* Erzeugt einen Datenbankeintrag mit gegebenem Item

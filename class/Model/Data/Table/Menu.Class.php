@@ -6,12 +6,9 @@
 
 namespace Model\Data\Table;
 
+use Model\Data\Item\TableItem;
+
 // Test
-define('ID_MENUE', 'id_menue');
-define('NAME_MENUE', 'name_menue');
-define('BESCHREIBUNG_MENUE', 'beschreibung_menue');
-define('RABATT_MENUE', 'rabatt_menue');
-define('DATUM_MENUE', 'datum_menue');
 
 /**
 *	Klasse für die Table Menü
@@ -30,8 +27,25 @@ class Menu extends Table
 // Methoden
 
 	// protected
-	
+    protected function getAllData($id)
+    {
+        if ($id === 0)
+            $query = "SELECT * FROM ".$this->_TableName;
+        else
+            $query = "SELECT * FROM ".$this->_TableName." WHERE `id_".$this->_TableName."` = ".$id.";";
 
-	// Public
+        $result = $this->_DB->executeQuery($query);
+
+        foreach ($result as $k => $v) {
+            $datensatz = new TableItem();
+            foreach ($v as $k2 => $v2) {
+                $datensatz->$k2 = $v2;
+            }
+            $this->_Data[] = $datensatz;
+        }
+    }
+
+
+    // Public
 	
 }

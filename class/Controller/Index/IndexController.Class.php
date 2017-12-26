@@ -8,15 +8,19 @@
 
 namespace Controller\Index;
 
+use Model\Data\Table;
 
 class IndexController extends ViewController
 {
     protected $_ViewName = "index";
 
+
+
     public function viewAction()
     {
         $this->addStyleSheet('bootstrap.css');
-        $this->addStyleSheet('bootstrap-theme.css');
+        //$this->addStyleSheet('bootstrap-theme.css');
+        $this->addStyleSheet('normalize.css');
         $this->addStyleSheet('style.css');
 
         $this->addScript('jquery.js');
