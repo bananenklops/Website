@@ -47,7 +47,7 @@ abstract class Table
 		foreach ($result as $k => $v) {
 			$datensatz = new TableItem();
 			foreach ($v as $k2 => $v2) {
-				$datensatz->$k2 = $v2; 
+				$datensatz->$k2 = utf8_encode($v2);
 			}
 			$this->_Data[] = $datensatz;
 		}
@@ -93,12 +93,15 @@ abstract class Table
 	* Erzeugt einen Datenbankeintrag mit gegebenem Item
 	*
 	* @param TableItem $item
+    * @return int
 	*/
 	public function erstelleEintrag(TableItem $item)
 	{
 		$values = "";
 		foreach($item->getColumns() as $key => $value) {
-			if (is_string($value)) {
+		    if (preg_match('/NOW()/', $value)) {
+		        $values .= $value;
+            } else if (is_string($value)) {
 				$values .= '"'.$value.'"';
 			} elseif (is_numeric($value)) {
 				$values .= $value;
@@ -111,6 +114,7 @@ abstract class Table
 		$query = "INSERT INTO ".$this->_TableName." VALUES (".$values.");";
 		
 		$this->_DB->executeQuery($query);
+		return $this->_DB->getLastID();
 	}
 
     /**

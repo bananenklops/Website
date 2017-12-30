@@ -12,6 +12,8 @@ $result = array(
     'success' => false
 );
 
+session_start();
+
 use Controller\Ajax\AjaxController;
 
 $ajax = new AjaxController();

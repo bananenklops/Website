@@ -82,5 +82,10 @@ class Database
 		}
 		return $res;
 	}
+
+	public function getLastID()
+    {
+        return mysqli_insert_id($this->_DB);
+    }
 }
 ?>

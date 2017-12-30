@@ -27,9 +27,8 @@ class IndexController extends ViewController
         $this->addScript('bootstrap.js');
         $this->addScript('script.js');
 
-        $this->_ViewData = array(
-            "Hausnummer" => 9
-        );
+        session_start();
+
         $this->createView();
     }
 }

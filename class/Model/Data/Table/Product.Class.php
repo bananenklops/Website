@@ -31,7 +31,9 @@ INNER JOIN
 ON
 	t_produkt.id_bestand=t_bestand.id_bestand
 WHERE
-	t_produkt.aktiv_produkt=1;
+	t_produkt.aktiv_produkt=1
+ORDER BY
+    t_produkt.art_produkt;
     ";
         else
             $query = "SELECT
