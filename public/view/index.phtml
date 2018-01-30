@@ -1,29 +1,35 @@
-<ol id="global-menu">
-    <li>Speisekarte</li>
-    <li>Veranstaltung</li>
-    <li>Login</li>
-    <li>Storno</li>
-    <li class="my-sonic">Festbon</li>
-</ol>
-
 <nav id="menu-categories">
-    <ol>
-        <li class="active" data-key="product">
-            <span class="food-category-name">Einzeln</span>
+    <ul class="nav">
+        <li class="nav-item food-category-item active" data-key="product">
+            <span class="food-category-name nav-link">Einzeln</span>
         </li>
-        <li data-key="menu">
-            <span class="food-category-name">Menü</span>
+        <li class="nav-item food-category-item" data-key="menu">
+            <span class="food-category-name nav-link">Menü</span>
         </li>
-    </ol>
+    </ul>
 </nav>
 
 <section class="menu-items">
-    <ol class="menu-item-listing">
+    <ul class="menu-item-listing">
 
-    </ol>
+    </ul>
 </section>
 
 <footer id="global-footer">
-    <button type="button" class="btn btn-success" id="commit-order">Bestellung bestätigen</button>
-    <button type="button" class="btn btn-danger" id="reset-order">Zurücksetzen</button>
+    <button type="button" class="btn btn-success" id="commit-order">
+        <span class="fa fa-check" aria-hidden="true"></span>
+        <span class="button-text">Bestellung bestätigen</span>
+    </button>
+    <button type="button" class="btn btn-warning" id="reset-order">
+        <span class="fa fa-minus" aria-hidden="true"></span>
+        <span class="button-text">Zurücksetzen</span>
+    </button>
+    <button type="button" class="btn btn-danger" id="cancel-order">
+        <span class="fa fa-trash" aria-hidden="true"></span>
+        <span class="button-text">Stornieren</span>
+    </button>
+    <button type="button" class="btn btn-danger" id="logOut">
+        <span class="fa fa-sign-out-alt" aria-hidden="true"></span>
+        <span class="button-text">Abmelden</span>
+    </button>
 </footer>

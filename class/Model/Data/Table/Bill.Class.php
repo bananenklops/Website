@@ -10,9 +10,9 @@ namespace Model\Data\Table;
 
 use Model\Data\Item\TableItem;
 
-class Bill extends Table
+class Bill extends TTable
 {
-    protected $_TableName = "t_bestellung";
+    protected $_TableName = "bestellung";
 
     protected function getAllData($id)
     {

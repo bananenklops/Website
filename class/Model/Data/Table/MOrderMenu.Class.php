@@ -9,7 +9,7 @@
 namespace Model\Data\Table;
 
 
-class MOrderMenu extends Table
+class MOrderMenu extends MTable
 {
-    protected $_TableName = 'm_bestellung_menue';
+    protected $_Matching = array("bestellung","menue");
 }

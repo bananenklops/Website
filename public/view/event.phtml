@@ -1,0 +1,48 @@
+<section class="menu-items">
+    <div id="event">
+        <form id="eventForm" class="needs-validation" novalidate>
+            <h1>Event Auswahl</h1>
+            <div class="form-group">
+                <label for="eventName">Event</label>
+                <select class="form-control" id="eventName" type="text" required >
+                    <?php
+                    foreach($this->_ViewData['events'] as $event) {
+                        echo"<option value=\"".$event['id_event']."\">".$event['name_event']."</option>\n";
+                    }
+                    ?>
+                </select>
+                <div class="invalid-feedback">
+                    Wählen Sie ein Event aus.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="eventButton">Bestätigen</button>
+        </form>
+    </div>
+</section>
+
+<footer id="global-footer">
+    <button type="button" class="btn btn-danger" id="logOut">
+        <span class="fa fa-sign-out-alt" aria-hidden="true"></span>
+        <span class="button-text">Abmelden</span>
+    </button>
+</footer>
+
+<script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+

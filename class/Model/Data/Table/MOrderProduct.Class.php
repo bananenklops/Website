@@ -9,8 +9,8 @@
 namespace Model\Data\Table;
 
 
-class MOrderProduct extends Table
+class MOrderProduct extends MTable
 {
-    protected $_TableName = 'm_bestellung_produkt';
+    protected $_Matching = array("bestellung", "produkt");
 
 }

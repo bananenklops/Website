@@ -13,14 +13,14 @@ use Model\Data\Item\TableItem;
 /**
 *	Klasse für die Table Menü
 */
-class Menu extends Table
+class Menu extends TTable
 {
 // Eigenschaften
 	
 	// Private
 	
 	// Protected
-	protected $_TableName = 't_menue';
+	protected $_TableName = 'menue';
 	
 	// Public
 	

@@ -80,12 +80,17 @@ class Database
 		while ($row = $result->fetch_assoc()) {
 			$res[] = $row;
 		}
-		return $res;
+		return $this->getErrorMessage() === "" ? $res : false;
 	}
 
 	public function getLastID()
     {
         return mysqli_insert_id($this->_DB);
+    }
+
+    public function getErrorMessage()
+    {
+        return mysqli_error($this->_DB);
     }
 }
 ?>

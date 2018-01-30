@@ -10,9 +10,9 @@ namespace Model\Data\Table;
 
 use Model\Data\Item\TableItem;
 
-class Product extends Table
+class Product extends TTable
 {
-    protected $_TableName = 't_produkt';
+    protected $_TableName = 'produkt';
 
     protected function getAllData($id)
     {
@@ -55,12 +55,15 @@ AND `id_".$this->_TableName."` = ".$id.";";
 
         $result = $this->_DB->executeQuery($query);
 
-        foreach ($result as $k => $v) {
-            $datensatz = new TableItem();
-            foreach ($v as $k2 => $v2) {
-                $datensatz->$k2 = utf8_encode($v2);
+        if ($result)
+            foreach ($result as $k => $v) {
+                $datensatz = new TableItem();
+                foreach ($v as $k2 => $v2) {
+                    $datensatz->$k2 = utf8_encode($v2);
+                }
+                $this->_Data[] = $datensatz;
             }
-            $this->_Data[] = $datensatz;
-        }
+        else
+            $this->_Data[] = null;
     }
 }

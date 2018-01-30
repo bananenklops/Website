@@ -76,7 +76,7 @@ CREATE TABLE `m_menue` (
 -- Daten für Tabelle `m_menue`
 --
 
-INSERT INTO `m_menue` (`id_menue`, `id_produkt`, `menge`) VALUES
+INSERT INTO m_menue_produkt (`id_menue`, `id_produkt`, `menge`) VALUES
 (1, 1, 1),
 (1, 2, 1);
 

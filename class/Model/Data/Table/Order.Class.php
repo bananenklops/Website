@@ -6,9 +6,6 @@
 
 namespace Model\Data\Table;
 
-use Model\Daten;
-use Model\Daten\Item;
-
 // Test
 define('ID_BESTELLUNG', 'id_menue');
 define('DATUM_BESTELLUNG', 'name_menue');
@@ -18,17 +15,28 @@ define('ID_EVENT', 'id_event');
 /**
 *	Klasse für Bestellungen
 */
-class Order extends Table
+class Order extends TTable
 {
 // Eigenschaften
 	
 	// Private
 	
 	// Protected
-	protected $_TableName = 't_bestellung';
-	
+	protected $_TableName = 'bestellung';
+
 	// Public
-	
+    public function deleteEntryByID($id)
+    {
+        $mOM = new MOrderMenu();
+        if (!$mOM->deleteMatchingEntry(0, $id))
+            return false;
+        $mOP = new MOrderProduct();
+        if (!$mOP->deleteMatchingEntry(0, $id))
+            return false;
+        return parent::deleteEntryByID($id);
+    }
+
+
 // Methoden
 
 	// protected

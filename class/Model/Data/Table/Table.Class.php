@@ -21,6 +21,8 @@ abstract class Table
 	protected $_DB;
 	/** @var string */
 	protected $_TableName = "";
+	/** @var string */
+	protected $_IDName = "";
 	/** @var array */
 	protected $_Data;
 	/** @var array */
@@ -34,13 +36,15 @@ abstract class Table
 
     /**
      * Holt alle Dateien für diese Table aus der Datenbank
+     *
+     * @param int $id
      */
 	protected function getAllData($id)
 	{
 	    if ($id === 0)
 		    $query = "SELECT * FROM ".$this->_TableName;
 	    else
-            $query = "SELECT * FROM ".$this->_TableName." WHERE `id_".$this->_TableName."` = ".$id.";";
+            $query = "SELECT * FROM ".$this->_TableName." WHERE `".$this->_IDName."` = ".$id.";";
 
 		$result = $this->_DB->executeQuery($query);
 		
@@ -99,7 +103,7 @@ abstract class Table
 	{
 		$values = "";
 		foreach($item->getColumns() as $key => $value) {
-		    if (preg_match('/NOW()/', $value)) {
+		    if (!is_object($value) && preg_match('/NOW()/', $value)) {
 		        $values .= $value;
             } else if (is_string($value)) {
 				$values .= '"'.$value.'"';
@@ -113,9 +117,22 @@ abstract class Table
 		$values = substr($values, 0, -1);
 		$query = "INSERT INTO ".$this->_TableName." VALUES (".$values.");";
 		
-		$this->_DB->executeQuery($query);
-		return $this->_DB->getLastID();
+		$res = $this->_DB->executeQuery($query);
+		return $res !== false ? $this->_DB->getLastID() : false;
 	}
+
+    /**
+     * Löscht einen Datenbankeintrag durch gegebene ID
+     *
+     * @param int $id
+     * @return bool
+     */
+	public function deleteEntryByID($id)
+    {
+        $query = "DELETE FROM ".$this->_TableName." WHERE ".$this->_IDName."=".$id.";";
+
+        return $this->_DB->executeQuery($query);
+    }
 
     /**
      * Gibt einem die richtige Table

@@ -1,5 +1,6 @@
 // Wird ausgeführt, sobald Seite geladen ist.
 $(document).ready(function(){
+
     getAndFillGrid();
 
     var categoryItem = $('#menu-categories').find('li');
@@ -25,11 +26,19 @@ $(document).ready(function(){
                 getAndFillGrid();
         }, 'json');
     });
+
+    $('#cancel-order').on('click', cancelOrder);
+
+    $('#loginButton').on('click', logIn);
+
+    $('#logOut').on('click', logOut);
+
+    $('#eventButton').on('click', saveEvent);
 });
 
 function getAndFillGrid()
 {
-    var listItem = $('ol.menu-item-listing').find('li');
+    var listItem = $('ul.menu-item-listing').find('li');
     listItem.remove();
     var key = $('#menu-categories').find('.active').attr('data-key');
 
@@ -57,7 +66,7 @@ function createProductListing(data)
                 listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><h2 class="orders">'+data.result+'x</h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
             else
                 listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
-            $('ol.menu-item-listing').append(function(){
+            $('ul.menu-item-listing').append(function(){
                 return $(listItem).on('click', function(){
                     addOrder(this);
                 });
@@ -78,7 +87,7 @@ function createMenuListing(data)
                 listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><h2 class="orders">'+data.result+'x</h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';
             else
                 listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';
-            $('ol.menu-item-listing').append(function(){
+            $('ul.menu-item-listing').append(function(){
                 return $(listItem).on('click', function(){
                     addOrder(this);
                 });
@@ -99,5 +108,87 @@ function addOrder(item)
         var orders = '<h2 class="orders">'+data.result+'x</h2>';
         $(item).find('h2.orders').remove();
         $(orders).insertAfter($(item).find('h2'));
+    }, 'json');
+}
+
+function cancelOrder()
+{
+    var buttons = {
+        "Ja": function() {
+            $.post("ajax.php", {'action': 'deleteLastOrder'}, function(data){
+                makeDialog("Storno", data.result, null);
+            }, "json");
+            $(this).dialog("close");
+        },
+        "Nein": function() {
+            $(this).dialog("close");
+        }
+    };
+
+    makeDialog("Bestätigen", "Möchten Sie wirklich die letzte Bestellung stornieren?", buttons);
+}
+
+function makeDialog(title, message, button)
+{
+    if (button === null)
+        button = {
+            "OK": function(){
+                $(this).dialog("close");
+            }
+        };
+
+    var dialog = $('<div id="dialog-confirm" title="' + title + '">\n' +
+        '  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' + message + '</p>\n' +
+        '</div>');
+
+    var dia = dialog.dialog({
+        autoOpen: false,
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: button
+    });
+
+    dia.dialog("open");
+}
+
+function logIn()
+{
+    var userName = $('#userName').val();
+    var password = $('#password').val();
+
+    if (userName === "") {
+        return;
+    }
+
+    if (password === "") {
+        return;
+    }
+
+    var param = {
+        'action': 'login',
+        'param': {
+            'userName': userName,
+            'password': password
+        }
+    };
+
+    $.post('ajax.php', param, function(){
+        location.reload();
+    }, 'json');
+}
+
+function logOut()
+{
+    $.post('ajax.php', {'action': 'logOut'}, function(){
+        location.reload();
+    }, 'json');
+}
+
+function saveEvent()
+{
+    $.post('ajax.php', {'action': 'saveEvent', 'param': {'eventID': $('select option:selected').val()}}, function(){
+        location.reload();
     }, 'json');
 }
