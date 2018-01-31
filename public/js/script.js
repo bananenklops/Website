@@ -65,7 +65,7 @@ function createProductListing(data)
             if (data.success === true)
                 listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><h2 class="orders">'+data.result+'x</h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
             else
-                listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
+                listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><h2 class="orders"></h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
             $('ul.menu-item-listing').append(function(){
                 return $(listItem).on('click', function(){
                     addOrder(this);
@@ -86,7 +86,7 @@ function createMenuListing(data)
             if (data.success === true)
                 listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><h2 class="orders">'+data.result+'x</h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';
             else
-                listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';
+                listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><h2 class="orders"></h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';
             $('ul.menu-item-listing').append(function(){
                 return $(listItem).on('click', function(){
                     addOrder(this);

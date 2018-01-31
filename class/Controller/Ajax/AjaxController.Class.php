@@ -8,16 +8,14 @@
 
 namespace Controller\Ajax;
 
-use Controller\Printer\BillPrinter;
-use Mike42\Escpos\Printer;
 use Model\Data\Item\TableItem;
 use Model\Data\Table;
 
 class AjaxController
 {
-    /** @var bool  */
+    /** @var bool */
     private $success = false;
-    /** @var array  */
+    /** @var array */
     private $result = null;
 
     /**
@@ -35,6 +33,17 @@ class AjaxController
     /**
      * @return array
      */
+    private function returnData()
+    {
+        return array(
+            'success' => $this->success,
+            'result' => $this->result
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function getMenu()
     {
         $menu = new Table\Menu();
@@ -46,6 +55,7 @@ class AjaxController
 
     /**
      * @param $param
+     *
      * @return array
      */
     public function addOrder($param)
@@ -63,25 +73,13 @@ class AjaxController
 
     /**
      * @param $param
+     *
      * @return array
      */
     public function getOrder($param)
     {
         $this->result = isset($_SESSION['order'][$param['key']][$param['id']]) ? $_SESSION['order'][$param['key']][$param['id']] : false;
         $this->success = $this->result !== false;
-
-        return $this->returnData();
-    }
-
-    /**
-     * @return array
-     */
-    public function resetOrder()
-    {
-        if (isset($_SESSION['order']))
-            unset ($_SESSION['order']);
-
-        $this->success = !isset($_SESSION['order']);
 
         return $this->returnData();
     }
@@ -100,6 +98,8 @@ class AjaxController
             $this->result = "Sie müssen ein Event ausgewählt haben. Bitte wählen Sie ein Event aus.";
             return $this->returnData();
         }
+
+        // TODO: Maximale Bestellmenge pro Zeit IDEE: SELECT COUNT(*) FROM t_bestellung WHERE datum_bestellung BETWEEN DATE_SUB(NOW(), INTERVAL 1 HOUR) AND NOW();
 
         if (isset($_SESSION['order'])) {
             // zu bestellende Produkte und Menüs
@@ -147,46 +147,11 @@ class AjaxController
     }
 
     /**
-     * @param $id
-     * @return bool
-     */
-    private function deleteOrder($id)
-    {
-        $order = new Table\Order();
-        return $order->deleteEntryByID($id);
-    }
-
-    /**
-     * @return array
-     */
-    public function deleteLastOrder()
-    {
-        if (!isset($_SESSION['user'])) {
-            $this->result = "Für diese Aktion müssen Sie angemeldet sein. Bitte melden Sie sich an.";
-            return $this->returnData();
-        }
-
-        if (isset($_SESSION['lastOrderID']))
-            $this->success = $this->deleteOrder($_SESSION['lastOrderID']);
-
-        if ($this->success)
-            unset($_SESSION['lastOrderID']);
-
-        $this->result =
-            $this->success
-            ?
-            "Letzte Bestellung wurde erfolgreich storniert."
-            :
-            "Die letzte Bestellung wurde bereits storniert, oder es wurde noch keine Bestellung getätigt.";
-
-        return $this->returnData();
-    }
-
-    /**
      * Erstellt Matching Tabellen Einträge
+     *
      * @param string $tableName
      * @param string $type
-     * @param array $column
+     * @param array  $column
      */
     private function createMatchingEntry($tableName, $type, $column)
     {
@@ -210,12 +175,51 @@ class AjaxController
     /**
      * @return array
      */
-    private function returnData()
+    public function resetOrder()
     {
-        return array(
-            'success' => $this->success,
-            'result' => $this->result
-        );
+        if (isset($_SESSION['order']))
+            unset ($_SESSION['order']);
+
+        $this->success = !isset($_SESSION['order']);
+
+        return $this->returnData();
+    }
+
+    /**
+     * @return array
+     */
+    public function deleteLastOrder()
+    {
+        if (!isset($_SESSION['user'])) {
+            $this->result = "Für diese Aktion müssen Sie angemeldet sein. Bitte melden Sie sich an.";
+            return $this->returnData();
+        }
+
+        if (isset($_SESSION['lastOrderID']))
+            $this->success = $this->deleteOrder($_SESSION['lastOrderID']);
+
+        if ($this->success)
+            unset($_SESSION['lastOrderID']);
+
+        $this->result =
+            $this->success
+                ?
+                "Letzte Bestellung wurde erfolgreich storniert."
+                :
+                "Die letzte Bestellung wurde bereits storniert, oder es wurde noch keine Bestellung getätigt.";
+
+        return $this->returnData();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return bool
+     */
+    private function deleteOrder($id)
+    {
+        $order = new Table\Order();
+        return $order->deleteEntryByID($id);
     }
 
     public function logIn($param)
@@ -233,8 +237,8 @@ class AjaxController
                 $this->result = "Erfolgreich angemeldet.";
                 return $this->returnData();
             }
-        $this->result = "Benutzername oder Kennwort ist falsch, oder Konto ist nicht aktiv.";
-    }
+            $this->result = "Benutzername oder Kennwort ist falsch, oder Konto ist nicht aktiv.";
+        }
         return $this->returnData();
     }
 

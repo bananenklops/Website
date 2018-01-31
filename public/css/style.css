@@ -29,6 +29,7 @@ section.menu-items {
 section.menu-items ul {
     padding: 0;
     display: flex;
+    flex-wrap: wrap;
 }
 
 section.menu-items li {
@@ -38,10 +39,23 @@ section.menu-items li {
     border: 1px solid #0c5460;
     list-style: none;
     padding: 1em;
-    flex: 1;
     display: flex;
+    max-width: 15em;
+    /*justify-content: space-between;*/
+    flex-grow: 1;
     flex-direction: column;
     align-items: center;
+}
+
+section.menu-items li span {
+    flex: 1;
+    flex-grow: 2;
+}
+
+h2.orders {
+    order: 2;
+    flex-grow: 1;
+    min-height: 1em;
 }
 
 span.button-text {
@@ -112,16 +126,16 @@ form > h1 {
     }
 
     footer button {
-        margin: 0;
+        margin: 0.1em;
     }
 
     footer #logOut {
-        margin: 0;
+        margin-top: auto;
     }
 }
 
 /* Desktop */
-@media (min-width: 1366px) {
+@media (min-width: 769px) {
     body {
         flex-direction: column;
     }

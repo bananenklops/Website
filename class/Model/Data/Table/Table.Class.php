@@ -85,6 +85,8 @@ abstract class Table
         if (is_array($this->_Data) && count($this->_Data) > 0) {
             foreach ($this->_Data as $number => $item) {
                 foreach ($item as $key => $value) {
+                    if(mb_detect_encoding($value) != 'UTF-8')
+                        $value = utf8_encode($value);
                     $res[$number][$key] = $value;
                 }
             }

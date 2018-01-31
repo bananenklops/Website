@@ -20,7 +20,7 @@ class Database
 	// Private
 	private $_DBHost     = 'localhost';
 	private $_DBUser     = 'root';
-	private $_DBPass     = '';
+	private $_DBPass     = 'EoDi9the';
 	private $_DBData     = 'festbon';
 	
 	private $_DB	     = null;
@@ -45,6 +45,8 @@ class Database
 		if ($this->_DB->connect_error) {
 			die ('MySQL Verbindungsfehler ('.$this->_DB->connect_errno.') '.$this->_DB->connect_error);
 		}
+
+		$this->_DB->query("SET NAMES 'utf8'");
 	}
 	
 	// Public
