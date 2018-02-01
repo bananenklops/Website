@@ -149,7 +149,6 @@ class AjaxController
             if ($this->success)
                 $_SESSION['lastOrderID'] = $this->result['orderID'];
 
-            // TODO: Druckfunktion kommt hier hinein, IP sollte aus einer Konfiguration geladen werden!
             $this->doPrintAction();
 
             $this->resetOrder();
@@ -167,6 +166,8 @@ class AjaxController
      * @param string $tableName
      * @param string $type
      * @param array  $column
+     *
+     * @return array|bool
      */
     private function createMatchingEntry($tableName, $type, $column)
     {
@@ -274,7 +275,7 @@ class AjaxController
         $event = new Table\Event($param['eventID']);
         if(is_object($event))
             $data = $event->getData()[0];
-        if(is_object($data) && $data->id_event == $param['eventID']) {
+        if(isset($data) && is_object($data) && $data->id_event == $param['eventID']) {
             $_SESSION['event']['id'] = $param['eventID'];
             $_SESSION['event']['maxOrders'] = $data->maxBestellung_event;
         }
