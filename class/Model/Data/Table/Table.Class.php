@@ -51,7 +51,7 @@ abstract class Table
 		foreach ($result as $k => $v) {
 			$datensatz = new TableItem();
 			foreach ($v as $k2 => $v2) {
-				$datensatz->$k2 = utf8_encode($v2);
+				$datensatz->$k2 = $v2;
 			}
 			$this->_Data[] = $datensatz;
 		}

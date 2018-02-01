@@ -24,7 +24,11 @@ class Order extends TTable
 	// Protected
 	protected $_TableName = 'bestellung';
 
-	// Public
+// Methoden
+
+	// protected
+
+    // Public
     public function deleteEntryByID($id)
     {
         $mOM = new MOrderMenu();
@@ -36,9 +40,16 @@ class Order extends TTable
         return parent::deleteEntryByID($id);
     }
 
-
-// Methoden
-
-	// protected
-	
+    public function checkOrderLimit($limit)
+    {
+        $query = "SELECT COUNT(*)
+FROM t_bestellung 
+WHERE datum_bestellung BETWEEN DATE_SUB(NOW(), INTERVAL 1 HOUR) AND NOW();";
+        $result = $this->_DB->executeQuery($query);
+        if ($result !== false) {
+            return $limit > $result[0]["COUNT(*)"];
+        } else {
+            return null;
+        }
+    }
 }

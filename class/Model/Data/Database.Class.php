@@ -85,11 +85,21 @@ class Database
 		return $this->getErrorMessage() === "" ? $res : false;
 	}
 
+    /**
+     *  Gibt die zuletzt erstellte ID zurück
+     *
+     *  @return int|string
+     */
 	public function getLastID()
     {
         return mysqli_insert_id($this->_DB);
     }
 
+    /**
+     *  Gibt eine Fehlernachricht aus, falls es eine gibt.
+     *
+     *  @return string
+     */
     public function getErrorMessage()
     {
         return mysqli_error($this->_DB);

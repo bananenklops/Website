@@ -24,6 +24,8 @@ $(document).ready(function(){
         $.post('ajax.php', param, function(data){
             if (data.success)
                 getAndFillGrid();
+            else
+                makeDialog("Fehler", data.result);
         }, 'json');
     });
 
@@ -56,13 +58,11 @@ function createProductListing(data)
 {
     var listItem = '';
     $.each(data.result, function(key, item){
-        var price = item.price / 100;
+        var price = item.price;
         var amount = item.unit !== "Stück" ? item.portion / 1000 + " " + item.unit : item.unit;
         amount = amount.replace('.',',');
-        price = price.toString();
-        price = price.replace('.',',');
         $.post('ajax.php', {'action': 'getOrder', 'param': {'key': 'product', 'id': item.ID}}, function(data){
-            if (data.success === true)
+            if (data.result > 0)
                 listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><h2 class="orders">'+data.result+'x</h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
             else
                 listItem = '<li data-ID="' + item.ID + '"><h2>' + item.name + '</h2><h2 class="orders"></h2><span>' + amount + '</span><h1>€ ' + price + '</h1></li>';
@@ -79,11 +79,9 @@ function createMenuListing(data)
 {
     var listItem = '';
     $.each(data.result, function(key, item){
-        var price = item.price / 100;
-        price = price.toString();
-        price = price.replace('.',',');
+        var price = item.price;
         $.post('ajax.php', {'action': 'getOrder', 'param': {'key': 'menu', 'id': item.ID}}, function(data){
-            if (data.success === true)
+            if (data.result > 0)
                 listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><h2 class="orders">'+data.result+'x</h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';
             else
                 listItem = '<li data-ID="' + item.ID + '" data-orders="0"><h2>' + item.name + '</h2><h2 class="orders"></h2><span>' + item.desc + '</span><h1>€ ' + price + '</h1></li>';

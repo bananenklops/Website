@@ -7,7 +7,9 @@
                 <select class="form-control" id="eventName" type="text" required >
                     <?php
                     foreach($this->_ViewData['events'] as $event) {
-                        echo"<option value=\"".$event['id_event']."\">".$event['name_event']."</option>\n";
+                        if ($event['aktiv_event']) {
+                            echo"<option value=\"".$event['id_event']."\">".$event['name_event']."</option>\n";
+                        }
                     }
                     ?>
                 </select>

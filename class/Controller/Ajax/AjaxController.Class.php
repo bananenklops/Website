@@ -25,6 +25,10 @@ class AjaxController
     {
         $product = new Table\Product();
         $this->result = $product->getRawData();
+        foreach ($this->result as $k => $menu) {
+            $price = $menu['price'] / 100;
+            $this->result[$k]['price'] = number_format($price, 2, ',', '.');
+        }
         $this->success = is_array($this->result);
 
         return $this->returnData();
@@ -48,7 +52,11 @@ class AjaxController
     {
         $menu = new Table\Menu();
         $this->result = $menu->getRawData();
-        $this->success = is_array($this->result);
+        foreach ($this->result as $k => $menu) {
+            $price = $menu['price'] / 100;
+            $this->result[$k]['price'] = number_format($price, 2, ',', '.');
+        }
+        $this->success = is_array($this->result) && count($this->result) > 0;
 
         return $this->returnData();
     }
@@ -78,7 +86,7 @@ class AjaxController
      */
     public function getOrder($param)
     {
-        $this->result = isset($_SESSION['order'][$param['key']][$param['id']]) ? $_SESSION['order'][$param['key']][$param['id']] : false;
+        $this->result = isset($_SESSION['order'][$param['key']][$param['id']]) ? $_SESSION['order'][$param['key']][$param['id']] : 0;
         $this->success = $this->result !== false;
 
         return $this->returnData();
@@ -99,7 +107,12 @@ class AjaxController
             return $this->returnData();
         }
 
-        // TODO: Maximale Bestellmenge pro Zeit IDEE: SELECT COUNT(*) FROM t_bestellung WHERE datum_bestellung BETWEEN DATE_SUB(NOW(), INTERVAL 1 HOUR) AND NOW();
+        $orderTable = new Table\Order();
+        $isOrderLimit = $orderTable->checkOrderLimit($_SESSION['event']['maxOrders']);
+        if (!$isOrderLimit) {
+            $this->result = "Bestelllimit erreicht!";
+            return $this->returnData();
+        }
 
         if (isset($_SESSION['order'])) {
             // zu bestellende Produkte und Menüs
@@ -107,7 +120,7 @@ class AjaxController
             $this->result['menu'] = isset($_SESSION['order']['menu']) ? $_SESSION['order']['menu'] : array();
 
             // neue Bestellung erstellen und in Datenbank speichern
-            $orderTable = new Table\Order();
+            
             $orderItem = new TableItem();
             $data = array(
                 'id_bestellung' => null,
@@ -256,8 +269,15 @@ class AjaxController
 
     public function saveEvent($param)
     {
-        $_SESSION['event']['id'] = $param['eventID'];
+        $event = new Table\Event($param['eventID']);
+        if(is_object($event))
+            $data = $event->getData()[0];
+        if(is_object($data) && $data->id_event == $param['eventID']) {
+            $_SESSION['event']['id'] = $param['eventID'];
+            $_SESSION['event']['maxOrders'] = $data->maxBestellung_event;
+        }
 
+        $this->result = $_SESSION['event'];
         $this->success = true;
         return $this->returnData();
     }
