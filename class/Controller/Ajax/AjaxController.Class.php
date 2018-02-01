@@ -8,6 +8,9 @@
 
 namespace Controller\Ajax;
 
+//use Controller\Bestellung\Bestellung;
+use Controller\Printer\BillPrinter;
+use Model\Data\Database;
 use Model\Data\Item\TableItem;
 use Model\Data\Table;
 
@@ -147,8 +150,7 @@ class AjaxController
                 $_SESSION['lastOrderID'] = $this->result['orderID'];
 
             // TODO: Druckfunktion kommt hier hinein, IP sollte aus einer Konfiguration geladen werden!
-            /*$printer = new BillPrinter('IP', 'PORT');
-            $printer->printBill($this->result['orderID']);*/
+            $this->doPrintAction();
 
             $this->resetOrder();
         } else {
@@ -280,5 +282,29 @@ class AjaxController
         $this->result = $_SESSION['event'];
         $this->success = true;
         return $this->returnData();
+    }
+    
+    private function doPrintAction()
+    {
+        $config = Database::getConfig('printer');
+
+        $printer = new BillPrinter($config['ip'], $config['port']);
+
+        // Event Daten
+        $event = new Table\Event($_SESSION['event']['id']);
+        $eventData = $event->getData()[0];
+        $printer->setEventID($eventData->id_event);
+        $printer->setEventName($eventData->name_event);
+        $printer->setEventDate($eventData->datum_event);
+
+        // Bestell Daten
+        $order = new Table\Order($_SESSION['lastOrderID']);
+        $orderData = $order->getData()[0];
+        $printer->setBillDate($orderData->datum_bestellung);
+        $printer->setBillID($orderData->id_bestellung);
+
+        // Items
+        //$items = array();
+        $printer->printBill($this->result['orderID']);
     }
 }

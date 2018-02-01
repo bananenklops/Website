@@ -18,11 +18,6 @@ class Database
 // Eigenschaften
 	
 	// Private
-	private $_DBHost     = 'localhost';
-	private $_DBUser     = 'root';
-	private $_DBPass     = 'EoDi9the';
-	private $_DBData     = 'festbon';
-	
 	private $_DB	     = null;
 	
 	private static $_DBInstance = null;
@@ -40,7 +35,8 @@ class Database
 	*/
 	private function __construct()
 	{
-		$this->_DB = new \mysqli($this->_DBHost, $this->_DBUser, $this->_DBPass, $this->_DBData);
+	    $config = $this::getConfig('database');
+		$this->_DB = new \mysqli($config['host'], $config['user'], $config['pass'], $config['database']);
 		
 		if ($this->_DB->connect_error) {
 			die ('MySQL Verbindungsfehler ('.$this->_DB->connect_errno.') '.$this->_DB->connect_error);
@@ -103,6 +99,17 @@ class Database
     public function getErrorMessage()
     {
         return mysqli_error($this->_DB);
+    }
+
+    static public function getConfig($section = null, $key = null)
+    {
+        $config = parse_ini_file('config.ini', true);
+        if (is_null($section))
+            return $config;
+        if (!is_null($section) && is_null($key))
+            return $config[$section];
+
+        return $config[$section][$key];
     }
 }
 ?>
