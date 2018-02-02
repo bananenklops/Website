@@ -103,6 +103,39 @@ form > h1 {
     color: #516487;
 }
 
+/* Dialog */
+.orderOverview {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.orderOverview .left {
+    margin-right: auto;
+    min-width: 33%;
+}
+
+.orderOverview .middle {
+    min-width: 33%;
+}
+
+.orderOverview .right {
+    margin-left: auto;
+    min-width: 33%;
+    text-align: right;
+}
+
+.orderOverview .head {
+    font-weight: bold;
+    margin-bottom: 0.2em;
+    border-bottom: 1px solid;
+}
+
+.orderOverviewSum {
+    border-top: 2px double;
+    text-align: right;
+    margin-top: 1em;
+}
+
 /* Mobile first */
 @media (max-width: 768px) {
     body {

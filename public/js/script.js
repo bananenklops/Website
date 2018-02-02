@@ -18,14 +18,31 @@ $(document).ready(function(){
     });
 
     $('#commit-order').on('click', function(){
-        var param = {
-            'action': 'commitOrder'
-        };
-        $.post('ajax.php', param, function(data){
-            if (data.success)
-                getAndFillGrid();
-            else
+        $.post( 'ajax.php', {'action': 'commitOrder'}, function ( data ) {
+            if( data.success ){
+                var message = "<div class='orderOverview'>";
+                message += "<span class='left head'>Artikel</span>";
+                message += "<span class='middle head'>Menge</span>";
+                message += "<span class='right head'>Preis</span>";
+                $.each( data.result.items, function ( key, item ) {
+                    message += "<span class='left'>" + item.name + "</span>";
+                    message += "<span class='middle'>" + item.amount + "</span>";
+                    message += "<span class='right'>€" + item.price + "</span>";
+                } );
+                message += "</div>";
+                message += "<h4 class='orderOverviewSum'>Zu zahlen: €" + data.result.cost + "</h4>";
+                var buttons = {
+                    'Beleg drucken': function () {
+                        $.post( 'ajax.php', {'action': 'doPrintAction', 'param': data.result}, function () {
+                            getAndFillGrid();
+                        }, 'json' );
+                        $( this ).dialog( "close" );
+                    }
+                };
+                makeDialog( "Bestellung", message, buttons, false );
+            } else{
                 makeDialog("Fehler", data.result);
+            }
         }, 'json');
     });
 
@@ -126,8 +143,10 @@ function cancelOrder()
     makeDialog("Bestätigen", "Möchten Sie wirklich die letzte Bestellung stornieren?", buttons);
 }
 
-function makeDialog(title, message, button)
-{
+function makeDialog( title, message, button, showWarning ) {
+    if( showWarning === null )
+        showWarning = true;
+
     if (button === null)
         button = {
             "OK": function(){
@@ -135,9 +154,15 @@ function makeDialog(title, message, button)
             }
         };
 
-    var dialog = $('<div id="dialog-confirm" title="' + title + '">\n' +
-        '  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' + message + '</p>\n' +
-        '</div>');
+    var html = '<div id="dialog-confirm" title="' + title + '">\n';
+    html += '<p>';
+    if( showWarning )
+        html += '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>';
+    html += message;
+    html += '</p>\n';
+    html += '</div>';
+
+    var dialog = $( html );
 
     var dia = dialog.dialog({
         autoOpen: false,

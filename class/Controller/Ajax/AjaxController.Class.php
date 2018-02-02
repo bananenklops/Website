@@ -146,12 +146,56 @@ class AjaxController
 
             $this->success = is_int($this->result['orderID']) && ($this->result['orderID'] > 0);
 
-            if ($this->success)
+            if ($this->success) {
                 $_SESSION['lastOrderID'] = $this->result['orderID'];
 
-            $this->doPrintAction();
+                $items = array();
+                // Einzelwaren und Gesamtbetrag berechnen
+                $products = $_SESSION['order']['product'];
+                if (is_array($products)) {
+                    foreach ($products as $id => $amount) {
+                        $p = new Table\Product($id);
+                        $d = $p->getData()[0];
+                        if (is_null($d))
+                            continue;
+                        $items[] = array(
+                            'name' => $d->name,
+                            'price' => $d->price,
+                            'amount' => $amount
+                        );
+                    }
+                }
+                $menus = $_SESSION['order']['menu'];
+                if (is_array($menus)) {
+                    foreach ($menus as $id => $amount) {
+                        $p = new Table\Menu($id);
+                        $d = $p->getData()[0];
+                        if (is_null($d))
+                            continue;
+                        $items[] = array(
+                            'name' => $d->name,
+                            'price' => $d->price,
+                            'amount' => $amount
+                        );
+                    }
+                }
+                if (count($items) < 1) {
+                    $this->result = "Fehler bei Itemverarbeitung. Wurde etwas bestellt?";
+                    $this->success = false;
+                } else {
+                    $cost = 0;
+                    foreach ($items as &$item) {
+                        $cost += ($item['price'] / 100 * $item['amount']);
+                        $price = $item['price'] / 100;
+                        $item['rawPrice'] = number_format($price, 2, ',', '.');
+                    }
+                    $this->result['rawCost'] = $cost;
+                    $cost = number_format($cost, 2, ',', '.');
+                    $this->result['items'] = $items;
+                    $this->result['cost'] = $cost;
+                }
+            }
 
-            $this->resetOrder();
         } else {
             $this->success = true;
             $this->result = 'Es gibt nichts zum Bestellen';
@@ -284,8 +328,8 @@ class AjaxController
         $this->success = true;
         return $this->returnData();
     }
-    
-    private function doPrintAction()
+
+    public function doPrintAction($items)
     {
         $config = Database::getConfig('printer');
 
@@ -305,7 +349,19 @@ class AjaxController
         $printer->setBillID($orderData->id_bestellung);
 
         // Items
-        //$items = array();
-        $printer->printBill($this->result['orderID']);
+        if (!is_array($items['items']))
+            return $this->returnData();
+        $printer->setItemList($items['items']);
+        $printer->setTotal($items['rawCost']);
+
+        $printer->printBill();
+
+
+        // Am Ende Bestellungen zurücksetzen
+        $this->resetOrder();
+
+        $this->success = true;
+
+        return $this->returnData();
     }
 }
