@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Festbon", "Festbon\Festbon.csproj", "{7ADD9AA0-AFF8-4C57-AAD7-8E141FA80C31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7ADD9AA0-AFF8-4C57-AAD7-8E141FA80C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ADD9AA0-AFF8-4C57-AAD7-8E141FA80C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ADD9AA0-AFF8-4C57-AAD7-8E141FA80C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ADD9AA0-AFF8-4C57-AAD7-8E141FA80C31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BD8B745-7E69-4AC9-902C-2AC34080706B}
+	EndGlobalSection
+EndGlobal

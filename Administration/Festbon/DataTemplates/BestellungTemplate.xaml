@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Festbon.DataTemplates">
+    <DataTemplate x:Key="BestellungTemplate">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Bestellzeit:"/>
+            <TextBlock Grid.Column="1" Text="{Binding Datum}"/>
+            <TextBlock Grid.Column="2" Text="Verkäufer:"/>
+            <TextBlock Grid.Column="3" Text="{Binding MitarbeiterName}"/>
+            <TextBlock Grid.Column="4" Text="Event:"/>
+            <TextBlock Grid.Column="5" Text="{Binding EventInfo}"/>
+            <Button    Grid.Column="6" Content="Details" Command="{Binding DataContext.BestellungsDetails, ElementName=DatenpflegeLV}" CommandParameter="{Binding}"/>
+
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

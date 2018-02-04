@@ -1,0 +1,31 @@
+﻿<Controls:MetroWindow x:Class="Festbon.View.Datenpflege"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:ts="clr-namespace:Festbon.View" mc:Ignorable="d"
+        Title="TK Eventmanagement - Administration"
+        WindowState="Maximized" 
+        Language="de-DE" Closed="HauptfensterSchliessen" >
+    <Window.Resources>
+        <ts:ItemTemplateSelector x:Key="ItemTemplateSelector" />
+    </Window.Resources>
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" x:Name="modelAuswahlCbx" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding AusgewaehltesModel}" HorizontalContentAlignment="Center" Margin="5"/>
+            <Button   Grid.Column="1" x:Name="modelHinzufuegenBtn" Command="{Binding HinzufuegenCommand}" Content="neuen Datensatz hinzufügen" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="5"/>
+        </Grid>
+        <ListView x:Name="DatenpflegeLV" Grid.Row="1" ItemsSource="{Binding Modelliste}" ItemTemplateSelector="{StaticResource ItemTemplateSelector}" Margin="5"/>
+    </Grid>
+
+</Controls:MetroWindow>

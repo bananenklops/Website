@@ -1,0 +1,36 @@
+﻿<Controls:MetroWindow  x:Class="Festbon.View.MenueProduktliste"
+                       x:Name="MenueProduktlisteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="Produkte im Menü">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock  Grid.Column="0" Text="Produkt:"/>
+            <ComboBox   Grid.Column="1" x:Name="ProduktCbx" ItemsSource="{Binding AlleProdukte}" SelectedValue="{Binding ausgewaehltesProdukt}" />
+            <TextBlock  Grid.Column="2" Text="Menge:"/>
+            <ComboBox   Grid.Column="3" x:Name="MengeCbx" ItemsSource="{Binding MengenAuswahl}" SelectedValue="{Binding Menge}" />
+            <Button     Grid.Column="4" x:Name="saveBtn" Content="Hinzufügen" Command="{Binding SpeichernCommand}"  Margin="5,0" />
+        </Grid>
+        <TextBlock  Grid.Row="1" Text="Das Menü enthält derzeit folgende Produkte:"/>
+        <ListView   Grid.Row="2" x:Name="ProduktListView" ItemsSource="{Binding Produktliste}" ItemTemplate="{StaticResource MenueProduktTemplate}"  Margin="5" />
+        <Button Grid.Row="3" Content="Fertig" Command="{Binding FensterSchliessen}" CommandParameter="{Binding ElementName=MenueProduktlisteWindow}"/>
+    </Grid>
+</Controls:MetroWindow>

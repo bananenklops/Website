@@ -1,0 +1,55 @@
+﻿<Controls:MetroWindow  x:Class="Festbon.View.Bestellungsdetails"
+                       x:Name="BestellungsdetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="Bestellungdetails"
+                       Language="de-DE">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Button     Grid.Row="0" Content="Daten exportieren" Command="{Binding DatenExportCommand}" />
+        <TextBlock  Grid.Row="1" Text="{Binding Titel}" Margin="5">
+            <TextBlock.Style>
+                <Style>
+                    <Setter Property="TextBlock.FontSize" Value="16"/>
+                    <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <ListView   Grid.Row="2" ItemsSource="{Binding Bestellpositionen}" ItemTemplate="{StaticResource BestellungsdetailsTemplate}" />
+        <Grid Grid.Row="3" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Gesamtsumme:">
+                <TextBlock.Style>
+                    <Style>
+                        <Setter Property="TextBlock.FontSize" Value="25"/>
+                        <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding Gesamtsumme, StringFormat=C}">
+                <TextBlock.Style>
+                    <Style>
+                        <Setter Property="TextBlock.FontSize" Value="25"/>
+                        <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+        
+        <Button     Grid.Row="4" Content="Fertig" Command="{Binding FensterSchliessenCommand}" CommandParameter="{Binding ElementName=BestellungsdetailsWindow}" />
+    </Grid>
+</Controls:MetroWindow>
