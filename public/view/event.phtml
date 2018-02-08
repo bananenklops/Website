@@ -6,11 +6,11 @@
                 <label for="eventName">Event</label>
                 <select class="form-control" id="eventName" type="text" required >
                     <?php
-                    foreach($this->_ViewData['events'] as $event) {
-                        if ($event['aktiv_event']) {
-                            echo"<option value=\"".$event['id_event']."\">".$event['name_event']."</option>\n";
-                        }
-                    }
+						foreach($this->_ViewData['events'] as $event) {
+							if ($event['aktiv_event']) {
+								echo"<option value=\"".$event['id_event']."\">".$event['name_event']."</option>\n";
+							}
+						}
                     ?>
                 </select>
                 <div class="invalid-feedback">

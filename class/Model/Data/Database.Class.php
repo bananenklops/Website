@@ -107,9 +107,9 @@ class Database
         if (is_null($section))
             return $config;
         if (!is_null($section) && is_null($key))
-            return $config[$section];
+            return isset($config[$section]) ? $config[$section] : null;
 
-        return $config[$section][$key];
+        return isset($config[$section][$key]) ? $config[$section][$key] : null;
     }
 }
 ?>

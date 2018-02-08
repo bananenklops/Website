@@ -18,14 +18,37 @@ $(document).ready(function(){
     });
 
     $('#commit-order').on('click', function(){
-        var param = {
-            'action': 'commitOrder'
-        };
-        $.post('ajax.php', param, function(data){
-            if (data.success)
-                getAndFillGrid();
-            else
+        $.post( 'ajax.php', {'action': 'commitOrder'}, function ( data ) {
+            if( data.success ){
+                var message = "<div class='orderOverview'>";
+                message += "<span class='left head'>Artikel</span>";
+                message += "<span class='middle head'>Menge</span>";
+                message += "<span class='right head'>Preis</span>";
+                $.each( data.result.items, function ( key, item ) {
+                    message += "<span class='left'>" + item.name + "</span>";
+                    message += "<span class='middle'>" + item.amount + "</span>";
+                    message += "<span class='right'>€" + item.price + "</span>";
+                } );
+                message += "</div>";
+                message += "<h4 class='orderOverviewSum'>Zu zahlen: €" + data.result.cost + "</h4>";
+                message += "<label for='payed'>Bezahlt</label><input class='form-control money' type='text' id='payed'/>";
+                var buttons = {
+                    'Beleg drucken': function () {
+
+                        $.post( 'ajax.php', {'action': 'doPrintAction', 'param': { 'return': data.result, 'payed': $('#payed').val()}}, function (data) {
+                            makeDialog("Erfolgreich bestellt", "Rückgeld: €" + data.result, {'OK': function(){$(this).dialog('destroy').remove()}}, false);
+                            getAndFillGrid();
+                        }, 'json' );
+                        $( this ).dialog('destroy').remove();
+                    }
+                };
+                makeDialog( "Bestellung", message, buttons, false );
+                $('.money').mask('000.000.000.000.000,00', {
+                    reverse: true
+                });
+            } else{
                 makeDialog("Fehler", data.result);
+            }
         }, 'json');
     });
 
@@ -116,28 +139,36 @@ function cancelOrder()
             $.post("ajax.php", {'action': 'deleteLastOrder'}, function(data){
                 makeDialog("Storno", data.result, null);
             }, "json");
-            $(this).dialog("close");
+            $(this).dialog('destroy').remove();
         },
         "Nein": function() {
-            $(this).dialog("close");
+            $(this).dialog('destroy').remove();
         }
     };
 
     makeDialog("Bestätigen", "Möchten Sie wirklich die letzte Bestellung stornieren?", buttons);
 }
 
-function makeDialog(title, message, button)
-{
+function makeDialog( title, message, button, showWarning ) {
+    if( showWarning === null )
+        showWarning = true;
+
     if (button === null)
         button = {
             "OK": function(){
-                $(this).dialog("close");
+                $(this).dialog('destroy').remove();
             }
         };
 
-    var dialog = $('<div id="dialog-confirm" title="' + title + '">\n' +
-        '  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' + message + '</p>\n' +
-        '</div>');
+    var html = '<div id="dialog-confirm" title="' + title + '">\n';
+    html += '<p>';
+    if( showWarning )
+        html += '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>';
+    html += message;
+    html += '</p>\n';
+    html += '</div>';
+
+    var dialog = $( html );
 
     var dia = dialog.dialog({
         autoOpen: false,

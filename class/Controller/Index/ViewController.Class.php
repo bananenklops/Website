@@ -31,6 +31,7 @@ class ViewController
         $this->addScript('jquery.js');
         $this->addScript('bootstrap.js');
         $this->addScript('jquery-ui.js');
+        $this->addScript('jquery.mask.js');
         $this->addScript('script.js');
     }
 

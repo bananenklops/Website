@@ -51,11 +51,11 @@ ON
 	t_produkt.id_bestand=t_bestand.id_bestand
 WHERE
 	t_produkt.aktiv_produkt=1
-AND `id_".$this->_TableName."` = ".$id.";";
+AND t_produkt.id_produkt = " . $id . ";";
 
         $result = $this->_DB->executeQuery($query);
 
-        if ($result && count($result) > 0)
+        if ($result && count($result) > 0 && !is_string($result))
             foreach ($result as $k => $v) {
                 $datensatz = new TableItem();
                 foreach ($v as $k2 => $v2) {

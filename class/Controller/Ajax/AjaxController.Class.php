@@ -146,12 +146,64 @@ class AjaxController
 
             $this->success = is_int($this->result['orderID']) && ($this->result['orderID'] > 0);
 
-            if ($this->success)
+            if ($this->success) {
                 $_SESSION['lastOrderID'] = $this->result['orderID'];
 
-            $this->doPrintAction();
+                $items = array();
+                // Einzelwaren und Gesamtbetrag berechnen
+				
+				// Produkte
+                $products = isset($_SESSION['order']['product']) ? $_SESSION['order']['product'] : null;
+                if (is_array($products)) {
+                    foreach ($products as $id => $amount) {
+                        $p = new Table\Product($id);
+                        $d = $p->getData();
+						$d = $d[0];
+                        if (is_null($d))
+                            continue;
+                        $items[] = array(
+                            'name' => $d->name,
+                            'price' => $d->price,
+                            'amount' => $amount
+                        );
+                    }
+                }
+				// Menüs
+                $menus = isset($_SESSION['order']['menu']) ? $_SESSION['order']['menu'] : null;
+                if (is_array($menus)) {
+                    foreach ($menus as $id => $amount) {
+                        $p = new Table\Menu($id);
+                        $d = $p->getData();
+						$d = $d[0];
+                        if (is_null($d))
+                            continue;
+                        $items[] = array(
+                            'name' => $d->name,
+                            'price' => $d->price,
+                            'amount' => $amount
+                        );
+                    }
+                }
+                if (count($items) < 1) {
+                    $this->result = "Fehler bei Itemverarbeitung. Wurde etwas bestellt?";
+                    $this->success = false;
+                } else {
+                    $cost = 0;
+                    foreach ($items as &$item) {
+                        $price = $item['price'] / 100;
+                        $cost += ($price * $item['amount']);
+                        $item['rawPriceSingle'] = $price;
+						$item['rawPrice'] = $price * $item['amount'];
+                        $item['priceSingle'] = number_format($price, 2, ',', '.');
+                        $item['price'] = number_format($item['rawPrice'], 2, ',', '.');
+                    }
+                    $this->result['rawCost'] = $cost;
+                    $cost = number_format($cost, 2, ',', '.');
+                    $this->result['items'] = $items;
+                    $this->result['cost'] = $cost;
+                }
+            }
 
-            $this->resetOrder();
         } else {
             $this->success = true;
             $this->result = 'Es gibt nichts zum Bestellen';
@@ -274,7 +326,8 @@ class AjaxController
     {
         $event = new Table\Event($param['eventID']);
         if(is_object($event))
-            $data = $event->getData()[0];
+            $data = $event->getData();
+			$data = $data[0];
         if(isset($data) && is_object($data) && $data->id_event == $param['eventID']) {
             $_SESSION['event']['id'] = $param['eventID'];
             $_SESSION['event']['maxOrders'] = $data->maxBestellung_event;
@@ -284,28 +337,53 @@ class AjaxController
         $this->success = true;
         return $this->returnData();
     }
-    
-    private function doPrintAction()
+
+    public function doPrintAction($param)
     {
+		$items = $param['return'];
         $config = Database::getConfig('printer');
 
         $printer = new BillPrinter($config['ip'], $config['port']);
 
         // Event Daten
         $event = new Table\Event($_SESSION['event']['id']);
-        $eventData = $event->getData()[0];
+        $eventData = $event->getData();
+		$eventData = $eventData[0];
         $printer->setEventID($eventData->id_event);
         $printer->setEventName($eventData->name_event);
         $printer->setEventDate($eventData->datum_event);
 
         // Bestell Daten
         $order = new Table\Order($_SESSION['lastOrderID']);
-        $orderData = $order->getData()[0];
+        $orderData = $order->getData();
+		$orderData = $orderData[0];
         $printer->setBillDate($orderData->datum_bestellung);
         $printer->setBillID($orderData->id_bestellung);
 
         // Items
-        //$items = array();
-        $printer->printBill($this->result['orderID']);
+        if (!is_array($items['items']))
+            return $this->returnData();
+        $printer->setItemList($items['items']);
+        $printer->setTotal($items['rawCost']);
+		
+		// Mitarbeiter
+		$printer->setVendorID($_SESSION['user']);
+        $printer->printBill();
+
+        // Am Ende Bestellungen zurücksetzen
+        $this->resetOrder();
+
+        $this->success = true;
+		
+		if (!is_null($param['payed']) && $param['payed'] !== '') {
+            $payed = $param['payed'];
+            $payed = str_replace('.', '', $payed);
+            $payed = str_replace(',', '', $payed);
+            $returnMoney = $payed / 100 - $items['rawCost'];
+
+            $this->result = number_format($returnMoney, 2, ',', '.');
+        }
+
+        return $this->returnData();
     }
 }
